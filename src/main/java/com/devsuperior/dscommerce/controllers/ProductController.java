@@ -1,7 +1,6 @@
 package com.devsuperior.dscommerce.controllers;
 
 import java.net.URI;
-import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devsuperior.dscommerce.dto.CustomError;
 import com.devsuperior.dscommerce.dto.ProductDTO;
 import com.devsuperior.dscommerce.services.ProductService;
-import com.devsuperior.dscommerce.services.Exceptions.ResourceNotFoundException;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -30,14 +27,9 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
-            ProductDTO dto = service.findById(id);
-            return ResponseEntity.ok(dto);
-        } catch (ResourceNotFoundException e) {
-            CustomError err = new CustomError(Instant.now(), 404, e.getMessage(), "caminho");
-            return ResponseEntity.status(404).body(err);
-        }
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        ProductDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping
@@ -61,7 +53,7 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

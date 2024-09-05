@@ -14,6 +14,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_product")
@@ -22,6 +23,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "deve ter entre 3 e 80 caracteres")
+
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -123,6 +126,4 @@ public class Product {
         return true;
     }
 
-
-    
 }
